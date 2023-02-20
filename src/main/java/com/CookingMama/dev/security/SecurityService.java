@@ -2,6 +2,7 @@ package com.CookingMama.dev.security;
 
 import com.CookingMama.dev.domain.dto.AdminDTO;
 import com.CookingMama.dev.domain.dto.UserDTO;
+import com.CookingMama.dev.domain.entity.Admin;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -60,15 +61,15 @@ public class SecurityService {
 
 
     // Admin
-    public String createAdminToken(AdminDTO dto){
+    public String createAdminToken(Admin admin){
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
         byte[] secretKeyByte = DatatypeConverter.parseBase64Binary(SECRET_KEY);
         Key key = new SecretKeySpec(secretKeyByte, signatureAlgorithm.getJcaName());
 
         Map<String, Object> map = new HashMap<>();
-        map.put("id", dto.getId());
-        map.put("adminEmail", dto.getAdminEmail());
-        map.put("adminName", dto.getAdminName());
+        map.put("id", admin.getId());
+        map.put("adminEmail", admin.getAdminEmail());
+        map.put("adminName", admin.getAdminName());
         return Jwts.builder().setClaims(map)
                 .signWith(key)
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(EXP_TIME)))

@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class CouponsDTO {
-    private Integer couponId;
+    private Long couponId;
     private String couponName;
     private String couponCode;
     private Integer couponPercentage;

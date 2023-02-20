@@ -6,8 +6,8 @@ import lombok.*;
 @AllArgsConstructor@NoArgsConstructor
 @Builder
 public class ItemsDTO {
-    private Integer id;
-    private Integer adminId;
+    private Long id;
+    private Long adminId;
     private Integer category;
     private String itemName;
     private String itemOption;

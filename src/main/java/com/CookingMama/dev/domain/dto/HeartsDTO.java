@@ -5,9 +5,9 @@ import lombok.*;
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
 public class HeartsDTO {
-    private Integer id;
-    private Integer userId;
-    private Integer itemId;
+    private Long id;
+    private Long userId;
+    private Long itemId;
     private Integer itemCount;
     private Integer itemPrice;
     private String itemOption;
