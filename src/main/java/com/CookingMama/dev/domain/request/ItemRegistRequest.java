@@ -5,7 +5,7 @@ import lombok.*;
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
 public class ItemRegistRequest {
-    private Integer adminId;
+    private Long adminId;
     private Integer category;
     private String itemName;
     private String itemOption;
@@ -13,4 +13,5 @@ public class ItemRegistRequest {
     private String itemImage;
     private String itemInfo;
     private Integer itemCount;
+
 }
