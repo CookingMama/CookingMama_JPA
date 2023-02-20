@@ -14,10 +14,10 @@ public class CouponListResponse {
     private Integer couponPercentage;
     private Integer status;
 
-    public CouponListResponse(CouponsDTO coupons){
-        this.couponId = coupons.getCouponId();
-        this.couponName = coupons.getCouponName();
-        this.couponPercentage = coupons.getCouponPercentage();
-        this.status = coupons.getStatus();
+    public CouponListResponse(CouponsDTO couponsDTO){
+        this.couponId = couponsDTO.getCouponId();
+        this.couponName = couponsDTO.getCouponName();
+        this.couponPercentage = couponsDTO.getCouponPercentage();
+        this.status = couponsDTO.getStatus();
     }
 }

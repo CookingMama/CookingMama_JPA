@@ -12,4 +12,9 @@ public class ExceptionConfig {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+
+    @ExceptionHandler(EmailCheckException.class)
+    public ResponseEntity<String> emailCheckException(EmailCheckException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

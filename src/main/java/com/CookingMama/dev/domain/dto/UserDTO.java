@@ -15,6 +15,4 @@ public class UserDTO {
     private String userAddress;
     private String userAddressDetail;
     private String userZipcode;
-
-
 }
