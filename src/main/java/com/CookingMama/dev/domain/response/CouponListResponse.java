@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class CouponListResponse {
-    private Integer couponId;
+    private Long couponId;
     private String couponName;
     private Integer couponPercentage;
     private Integer status;

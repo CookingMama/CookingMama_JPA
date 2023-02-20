@@ -5,7 +5,7 @@ import lombok.*;
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
 public class AdminDTO {
-    private Integer id;
+    private Long id;
     private String adminEmail;
     private String adminPw;
     private String adminName;

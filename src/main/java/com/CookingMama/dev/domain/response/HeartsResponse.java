@@ -6,7 +6,7 @@ import lombok.*;
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
 public class HeartsResponse {
-    private Integer itemId;
+    private Long itemId;
     private Integer itemCount;
     private Integer itemPrice;
     private String itemOption;
