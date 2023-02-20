@@ -1,0 +1,18 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/cooking_mama?serverTimezone=UTC
+    username: root
+    password: 1234
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  SECRET_KEY: aidhgjarisdafjskljklriaonsdikrnsnnfkdsijkevklasdfujiielarlfnkanvdkvcxfsdgweasdv
+  EXP_TIME: 3600000
