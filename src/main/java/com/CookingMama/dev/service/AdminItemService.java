@@ -40,11 +40,11 @@ public class AdminItemService {
         return adminItemRegistRepository.save(item);
     }
 
-    public List<AdminItemListResponse> adminItemList(){
+    public List<ItemListResponse> adminItemList(){
         Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
         List<Item> items = adminItemListRepository.findByAdminId(adminId);
-        List<AdminItemListResponse> responses = items.stream()
-                .map(AdminItemListResponse::new)
+        List<ItemListResponse> responses = items.stream()
+                .map(ItemListResponse::new)
                 .collect(Collectors.toList());
         return responses;
     }

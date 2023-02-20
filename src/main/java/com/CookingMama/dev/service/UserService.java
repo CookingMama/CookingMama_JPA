@@ -1,25 +1,38 @@
 package com.CookingMama.dev.service;
 
+import com.CookingMama.dev.domain.entity.Item;
 import com.CookingMama.dev.domain.entity.User;
 import com.CookingMama.dev.domain.request.LoginRequest;
 import com.CookingMama.dev.domain.request.SignupRequest;
-import com.CookingMama.dev.domain.response.UserDetailResponse;
-import com.CookingMama.dev.domain.response.UserResponse;
+import com.CookingMama.dev.domain.response.*;
 import com.CookingMama.dev.exception.LoginException;
+import com.CookingMama.dev.repository.UserItemRepository;
 import com.CookingMama.dev.repository.UserRepository;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final SecurityService securityService;
+    private final UserItemRepository userItemRepository;
 
+
+    public List<ItemListResponse> userItemList(){
+        Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
+        List<Item> items = userItemRepository.findAll();
+        List<ItemListResponse> responses = items.stream()
+                .map(ItemListResponse::new)
+                .collect(Collectors.toList());
+        return responses;
+    }
     public UserResponse login(LoginRequest request){
         Optional<User> findByUserEmailAndUserPw =
                 userRepository.findByUserEmailAndUserPw(request.getUserEmail(), request.getUserPw());
@@ -67,5 +80,11 @@ public class UserService {
         }catch (Exception e){
             return "회원정보 수정에 실패했습니다.";
         }
+    }
+    public UserItemResponse userItemDetail(Long itemId){
+        Optional<Item> findById = userItemRepository.findById(itemId);
+        Item item = findById.orElseThrow(NullPointerException::new);
+        UserItemResponse response = new UserItemResponse(item);
+        return response;
     }
 }
