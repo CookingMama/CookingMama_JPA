@@ -11,13 +11,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserTokenInfo {
-    private int id;
+    private Long id;
     private String userEmail;
     private String userName;
 
 
     public UserTokenInfo tokenToDTO(Claims claims) {
-        Integer id = (Integer) claims.get("id");
+        Long id = (Long) claims.get("id");
         String email = (String) claims.get("userEmail");
         String name = (String) claims.get("userName");
 

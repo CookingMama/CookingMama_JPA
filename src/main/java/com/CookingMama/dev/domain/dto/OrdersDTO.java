@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class OrdersDTO {
-    private Integer id;
-    private Integer adminId;
-    private Integer itemId;
-    private Integer userId;
+    private Long id;
+    private Long adminId;
+    private Long itemId;
+    private Long userId;
     private Integer itemPrice;
     private Integer itemCount;
     private Integer itemDiscount;
