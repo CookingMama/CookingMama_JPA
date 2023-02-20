@@ -3,6 +3,7 @@ package com.CookingMama.dev.service;
 import com.CookingMama.dev.domain.entity.User;
 import com.CookingMama.dev.domain.request.LoginRequest;
 import com.CookingMama.dev.domain.request.SignupRequest;
+import com.CookingMama.dev.domain.response.UserDetailResponse;
 import com.CookingMama.dev.domain.response.UserResponse;
 import com.CookingMama.dev.exception.LoginException;
 import com.CookingMama.dev.repository.UserRepository;
@@ -34,7 +35,8 @@ public class UserService {
     }
 
     public UserResponse signup(SignupRequest request){
-        User user = request.toEntity();
+        User user = new User();
+        user.setUser(request);
         Optional<User> findUserEmail = userRepository.findByUserEmail(request.getUserEmail());
         if(findUserEmail.isPresent()){
             throw new NullPointerException();
@@ -42,5 +44,28 @@ public class UserService {
         userRepository.save(user);
         LoginRequest loginRequest = new LoginRequest(user.getUserEmail(), user.getUserPw());
         return login(loginRequest);
+    }
+
+    public UserDetailResponse userInfo(){
+        String token = securityService.getToken();
+        Long userId = securityService.tokenToDTO(token).getId();
+        Optional<User> findById = userRepository.findById(userId);
+        User user = findById.orElseThrow(NullPointerException::new);
+        UserDetailResponse userDetailResponse = new UserDetailResponse(user);
+        return userDetailResponse;
+    }
+
+    public String userUpdate(SignupRequest request){
+        String token = securityService.getToken();
+        Long userId = securityService.tokenToDTO(token).getId();
+        Optional<User> findById = userRepository.findById(userId);
+        User user = findById.orElseThrow(NullPointerException::new);
+        try {
+            user.setUser(request);
+            userRepository.save(user);
+            return "회원정보가 수정되었습니다.";
+        }catch (Exception e){
+            return "회원정보 수정에 실패했습니다.";
+        }
     }
 }

@@ -17,7 +17,7 @@ public class UserTokenInfo {
 
 
     public UserTokenInfo tokenToDTO(Claims claims) {
-        Long id = (Long) claims.get("id");
+        Long id = Long.parseLong(String.valueOf(claims.get("id")));
         String email = (String) claims.get("userEmail");
         String name = (String) claims.get("userName");
 
