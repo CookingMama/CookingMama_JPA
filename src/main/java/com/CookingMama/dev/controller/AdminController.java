@@ -45,7 +45,7 @@ public class AdminController {
     }
 
     @GetMapping("/itemlist")
-    public List<AdminItemListResponse> adminItemList(){
+    public List<ItemListResponse> adminItemList(){
         return adminItemService.adminItemList();
     }
 }
