@@ -10,6 +10,8 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter@Setter
@@ -23,6 +25,8 @@ public class Admin {
     private String adminName;
     private String adminBirth;
     private String adminPhoneNumber;
+    @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
+    private List<Item> itemList = new ArrayList<>();
 
     public Admin(String adminEmail, String adminPw, String adminName, String adminBirth, String adminPhoneNumber) {
         this.adminEmail = adminEmail;

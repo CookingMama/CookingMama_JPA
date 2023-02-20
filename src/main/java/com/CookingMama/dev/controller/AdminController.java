@@ -4,6 +4,7 @@ import com.CookingMama.dev.domain.entity.Item;
 import com.CookingMama.dev.domain.request.AdminLoginRequest;
 import com.CookingMama.dev.domain.request.AdminSignUpRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
+import com.CookingMama.dev.domain.response.AdminItemListResponse;
 import com.CookingMama.dev.domain.response.AdminResponse;
 import com.CookingMama.dev.domain.response.ItemListResponse;
 import com.CookingMama.dev.exception.EmailCheckException;
@@ -44,9 +45,7 @@ public class AdminController {
     }
 
     @GetMapping("/itemlist")
-    public List<Item> adminItemList(){
-        Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
-        log.info(adminId.toString());
-        return adminItemService.adminItemList(adminId);
+    public List<AdminItemListResponse> adminItemList(){
+        return adminItemService.adminItemList();
     }
 }
