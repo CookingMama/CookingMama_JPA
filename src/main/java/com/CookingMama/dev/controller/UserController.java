@@ -1,14 +1,14 @@
 package com.CookingMama.dev.controller;
 
+import com.CookingMama.dev.domain.dto.UserDTO;
 import com.CookingMama.dev.domain.request.LoginRequest;
 import com.CookingMama.dev.domain.request.SignupRequest;
+import com.CookingMama.dev.domain.request.UserUpdateRequest;
+import com.CookingMama.dev.domain.response.UserDetailResponse;
 import com.CookingMama.dev.domain.response.UserResponse;
 import com.CookingMama.dev.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,5 +26,14 @@ public class UserController {
     @PostMapping("/signup")
     public UserResponse signup(@RequestBody @Valid SignupRequest request){
         return userService.signup(request);
+    }
+
+    @GetMapping("/my-page")
+    public UserDetailResponse userInfo() {
+        return userService.userInfo();
+    }
+    @PutMapping("/my-page")
+    public String updateUser(@RequestBody SignupRequest request) {
+        return userService.userUpdate(request);
     }
 }
