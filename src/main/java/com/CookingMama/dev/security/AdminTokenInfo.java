@@ -15,4 +15,6 @@ public class AdminTokenInfo {
         String adminName = (String) claims.get("adminName");
         return new AdminTokenInfo(id, adminEmail, adminName);
     }
+
+
 }
