@@ -3,13 +3,11 @@ package com.CookingMama.dev.service;
 import com.CookingMama.dev.domain.entity.Admin;
 import com.CookingMama.dev.domain.entity.Category;
 import com.CookingMama.dev.domain.entity.Item;
+import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
-import com.CookingMama.dev.domain.response.AdminItemListResponse;
+import com.CookingMama.dev.domain.response.AdminItemDetailResponse;
 import com.CookingMama.dev.domain.response.ItemListResponse;
-import com.CookingMama.dev.repository.AdminItemListRepository;
-import com.CookingMama.dev.repository.AdminItemRegistRepository;
-import com.CookingMama.dev.repository.AdminRepository;
-import com.CookingMama.dev.repository.CategoryRepository;
+import com.CookingMama.dev.repository.*;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +27,7 @@ public class AdminItemService {
     private final AdminRepository adminRepository;
     private final CategoryRepository categoryRepository;
 
+    // 상품 등록
     public Item itemRegist(ItemRegistRequest request){
         Integer categoryId = request.getCategory();
         Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
@@ -39,7 +38,7 @@ public class AdminItemService {
         Item item = new Item(request, admin, category);
         return adminItemRegistRepository.save(item);
     }
-
+    // 상품 리스트 조회
     public List<ItemListResponse> adminItemList(){
         Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
         List<Item> items = adminItemListRepository.findByAdminId(adminId);
@@ -47,5 +46,29 @@ public class AdminItemService {
                 .map(ItemListResponse::new)
                 .collect(Collectors.toList());
         return responses;
+    }
+    // 상품 상세보기
+    public AdminItemDetailResponse adminItemDetail(Long itemId){
+        Optional<Item> item = adminItemListRepository.findById(itemId);
+        Item item1 = item.orElseThrow(NullPointerException::new);
+        AdminItemDetailResponse adminItemDetailResponse = new AdminItemDetailResponse(item1);
+        return adminItemDetailResponse;
+    }
+    // 상품 정보 수정
+    public String adminItemUpdate(Long itemId, AdminUpdateItemRequest request){
+
+        Optional<Category> category = categoryRepository.findById(request.getCategory());
+        Category category1 = category.orElseThrow(NullPointerException::new);
+        Optional<Item> item = adminItemListRepository.findById(itemId);
+        Item item1 = item.orElseThrow(NullPointerException::new);
+        try {
+            item1.setItem(request, category1);
+            adminItemListRepository.save(item1);
+            return "상품 수정이 완료되었습니다.";
+        }
+        catch (NullPointerException e){
+            return "상품 수정이 실패하였습니다.";
+        }
+
     }
 }

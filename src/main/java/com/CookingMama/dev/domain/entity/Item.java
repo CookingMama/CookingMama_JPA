@@ -1,5 +1,6 @@
 package com.CookingMama.dev.domain.entity;
 
+import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -42,4 +43,15 @@ public class Item {
         this.admin = admin;
         this.category = category;
     }
+
+    public void setItem(AdminUpdateItemRequest request, Category category) {
+        this.itemName = request.getItemName();
+        this.itemOption = request.getItemOption();
+        this.itemPrice = request.getItemPrice();
+        this.itemImage = request.getItemImage();
+        this.itemInfo = request.getItemInfo();
+        this.itemCount = request.getItemCount();
+        this.category = category;
+    }
+
 }
