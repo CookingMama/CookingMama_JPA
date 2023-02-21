@@ -29,6 +29,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<UserCoupon> myCoupon = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Hearts> myHearts = new ArrayList<>();
+
     public User(String userEmail, String userPw, String userName, String userBirth, String userAddress, String userAddressDetail, String userZipCode, String userPhoneNumber) {
         this.userEmail = userEmail;
         this.userPw = userPw;

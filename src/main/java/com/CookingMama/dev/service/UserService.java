@@ -1,11 +1,14 @@
 package com.CookingMama.dev.service;
 
+import com.CookingMama.dev.domain.entity.Hearts;
 import com.CookingMama.dev.domain.entity.Item;
 import com.CookingMama.dev.domain.entity.User;
+import com.CookingMama.dev.domain.request.HeartsRequest;
 import com.CookingMama.dev.domain.request.LoginRequest;
 import com.CookingMama.dev.domain.request.SignupRequest;
 import com.CookingMama.dev.domain.response.*;
 import com.CookingMama.dev.exception.LoginException;
+import com.CookingMama.dev.repository.HeartsRepository;
 import com.CookingMama.dev.repository.UserItemRepository;
 import com.CookingMama.dev.repository.UserRepository;
 import com.CookingMama.dev.security.SecurityService;
@@ -23,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final SecurityService securityService;
     private final UserItemRepository userItemRepository;
+    private final HeartsRepository heartsRepository;
 
 
     public List<ItemListResponse> userItemList(){
@@ -82,5 +86,32 @@ public class UserService {
         Item item = findById.orElseThrow(NullPointerException::new);
         UserItemResponse response = new UserItemResponse(item);
         return response;
+    }
+
+    // Hearts 조회
+    public List<HeartsResponse> userHeartsList(){
+        Long userId = securityService.tokenToUser(securityService.getToken()).getId();
+        List<Hearts> hearts = heartsRepository.findByUserId(userId);
+        List<HeartsResponse> responses = hearts.stream()
+                .map(HeartsResponse::new)
+                .collect(Collectors.toList());
+        return responses;
+    }
+
+    // Hearts 수량 조정
+    public String userHeartsUpdate(List<HeartsRequest> request){
+        Long userId = securityService.tokenToUser(securityService.getToken()).getId();
+        List<Hearts> hearts = heartsRepository.findByUserId(userId);
+        try {
+            for(Hearts hearts1:hearts) {
+                for (HeartsRequest request1 : request) {
+                    hearts1.userHeartsUpdate(request1);
+                    heartsRepository.save(hearts1);
+                }
+            }
+            return "수정이 완료되었습니다.";
+        }catch (NullPointerException e){
+            return "수정이 취소되었습니다.";
+        }
     }
 }
