@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddCouponRequest {
-    private Integer userId;
+    @NotEmpty(message = "쿠폰코드를 입력해주세요.")
     private String couponCode;
 }

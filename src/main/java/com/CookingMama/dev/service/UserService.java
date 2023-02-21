@@ -61,18 +61,14 @@ public class UserService {
 
     public UserDetailResponse userInfo(){
         String token = securityService.getToken();
-        Long userId = securityService.tokenToDTO(token).getId();
-        Optional<User> findById = userRepository.findById(userId);
-        User user = findById.orElseThrow(NullPointerException::new);
+        User user = securityService.tokenToUser(token);
         UserDetailResponse userDetailResponse = new UserDetailResponse(user);
         return userDetailResponse;
     }
 
     public String userUpdate(SignupRequest request){
         String token = securityService.getToken();
-        Long userId = securityService.tokenToDTO(token).getId();
-        Optional<User> findById = userRepository.findById(userId);
-        User user = findById.orElseThrow(NullPointerException::new);
+        User user = securityService.tokenToUser(token);
         try {
             user.setUser(request);
             userRepository.save(user);

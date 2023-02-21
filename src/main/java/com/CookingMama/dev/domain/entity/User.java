@@ -1,17 +1,14 @@
 package com.CookingMama.dev.domain.entity;
 
 import com.CookingMama.dev.domain.request.SignupRequest;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter @Setter @ToString
 @AllArgsConstructor @NoArgsConstructor
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +26,9 @@ public class User {
     private String userZipCode;
     @Column(nullable = false)
     private String userPhoneNumber;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<UserCoupon> myCoupon = new ArrayList<>();
     public User(String userEmail, String userPw, String userName, String userBirth, String userAddress, String userAddressDetail, String userZipCode, String userPhoneNumber) {
         this.userEmail = userEmail;
         this.userPw = userPw;

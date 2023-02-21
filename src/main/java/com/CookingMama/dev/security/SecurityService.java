@@ -2,9 +2,12 @@ package com.CookingMama.dev.security;
 
 import com.CookingMama.dev.domain.entity.User;
 import com.CookingMama.dev.domain.entity.Admin;
+import com.CookingMama.dev.repository.UserRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,14 +20,22 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
+
 public class SecurityService {
+
     @Value("${jwt.SECRET_KEY}")
     private String SECRET_KEY;
 
     @Value("${jwt.EXP_TIME}")
     private String EXP_TIME;
+
+    @Autowired
+    private UserRepository userRepository;
+    public SecurityService() {
+    }
 
     public String createUserToken(User user){
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
@@ -84,5 +95,12 @@ public class SecurityService {
                 .getBody();
         AdminTokenInfo info = new AdminTokenInfo().tokenToDTO(claims);
         return info;
+    }
+
+    public User tokenToUser(String token){
+        UserTokenInfo tokenInfo = tokenToDTO(token);
+        Optional<User> optionalMember = userRepository.findById(tokenInfo.getId());
+        User user = optionalMember.orElseThrow(() -> new JwtException("유효하지 않음"));
+        return user;
     }
 }
