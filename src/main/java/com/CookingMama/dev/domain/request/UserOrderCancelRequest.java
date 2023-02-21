@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserOrderCancelRequest {
-    private Integer itemId;
+    private Long itemId;
     private Integer itemCount;
 }

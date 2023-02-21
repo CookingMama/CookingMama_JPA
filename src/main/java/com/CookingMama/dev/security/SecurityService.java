@@ -2,6 +2,7 @@ package com.CookingMama.dev.security;
 
 import com.CookingMama.dev.domain.entity.User;
 import com.CookingMama.dev.domain.entity.Admin;
+import com.CookingMama.dev.repository.AdminRepository;
 import com.CookingMama.dev.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -34,6 +35,8 @@ public class SecurityService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AdminRepository adminRepository;
     public SecurityService() {
     }
 
@@ -102,5 +105,12 @@ public class SecurityService {
         Optional<User> optionalMember = userRepository.findById(tokenInfo.getId());
         User user = optionalMember.orElseThrow(() -> new JwtException("유효하지 않음"));
         return user;
+    }
+
+    public Admin tokenToAdmin(String token){
+        AdminTokenInfo tokenInfo = tokenToAdminDTO(token);
+        Optional<Admin> optionalMember = adminRepository.findById(tokenInfo.getId());
+        Admin admin = optionalMember.orElseThrow(() -> new JwtException("유효하지 않음"));
+        return admin;
     }
 }

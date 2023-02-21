@@ -8,13 +8,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserOrderRequest {
-    private Integer adminId;
-    private Integer itemId;
-    private Integer userId;
+    private Long adminId;
+    private Long itemId;
+    private Long userId;
     private Integer itemPrice;
+    private Integer categoryId;
     private Integer itemCount;
     private Integer itemDiscount;
     private Integer itemTotalPrice;
-    private String orderNumber;
+    private Long orderNumber;
 }
 

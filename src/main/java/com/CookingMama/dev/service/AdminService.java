@@ -8,7 +8,7 @@ import com.CookingMama.dev.domain.request.AdminSignUpRequest;
 import com.CookingMama.dev.domain.response.AdminOrderListResponse;
 import com.CookingMama.dev.domain.response.AdminResponse;
 import com.CookingMama.dev.exception.EmailCheckException;
-import com.CookingMama.dev.repository.AdminOrderRepository;
+import com.CookingMama.dev.repository.OrderRepository;
 import com.CookingMama.dev.repository.AdminRepository;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 public class AdminService {
     private final AdminRepository adminRepository;
     private final SecurityService securityService;
-    private final AdminOrderRepository adminOrderRepository;
-
+    private final OrderRepository adminOrderRepository;
     public AdminResponse adminLoginService(AdminLoginRequest request){
         Optional<Admin> findByAdminEmailAndAdminPw = adminRepository.findByAdminEmailAndAdminPw(request.getAdminEmail(), request.getAdminPw());
         Admin admin = findByAdminEmailAndAdminPw.orElseThrow(NullPointerException::new);
