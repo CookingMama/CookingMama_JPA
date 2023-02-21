@@ -1,19 +1,21 @@
 package com.CookingMama.dev.domain.response;
 
 import com.CookingMama.dev.domain.dto.HeartsDTO;
+import com.CookingMama.dev.domain.entity.Hearts;
 import lombok.*;
 
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
 public class HeartsResponse {
-    private Long itemId;
-    private Integer itemCount;
-    private Integer itemPrice;
+    private String itemName;
     private String itemOption;
-    public HeartsResponse(HeartsDTO heartsDTO){
-        this.itemId = heartsDTO.getItemId();
-        this.itemCount = heartsDTO.getItemCount();
-        this.itemPrice = heartsDTO.getItemPrice();
-        this.itemOption = heartsDTO.getItemOption();
+    private Integer itemPrice;
+    private Integer count;
+
+    public HeartsResponse(Hearts hearts){
+        this.itemName = hearts.getItem().getItemName();
+        this.itemOption = hearts.getItem().getItemOption();
+        this.itemPrice = hearts.getItem().getItemPrice();
+        this.count = hearts.getCount();
     }
 }

@@ -39,6 +39,10 @@ public class Item {
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<OrderInfo> orderInfoList = new ArrayList<>();
+
+    @OneToOne
+    private Hearts hearts;
+
     public Item(ItemRegistRequest request, Admin admin, Category category){
         this.itemName = request.getItemName();
         this.itemOption = request.getItemOption();
