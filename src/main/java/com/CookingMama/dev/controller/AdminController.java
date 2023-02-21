@@ -7,6 +7,7 @@ import com.CookingMama.dev.exception.EmailCheckException;
 import com.CookingMama.dev.security.SecurityService;
 import com.CookingMama.dev.service.AdminItemService;
 import com.CookingMama.dev.service.AdminService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -66,5 +67,16 @@ public class AdminController {
     public String stockUpdate(@PathVariable("itemId") Long itemId,
                             @RequestBody StockUpdateRequest request){
         return adminItemService.adminStockUpdate(itemId, request);
+    }
+    // 주문 내역 조회
+    @GetMapping("/order")
+    public List<AdminOrderListResponse> adminOrderList(){
+        return adminService.adminOrderList();
+    }
+    // 주문 내역 수정 (배송 처리 & 송장번호 입력)
+    @PutMapping("/order/{orderId}")
+    public String adminOrderUpdate(@PathVariable("orderId") Long orderId,
+                                   @RequestBody AdminOrderRequest request){
+        return adminService.adminOrderUpdate(orderId, request);
     }
 }

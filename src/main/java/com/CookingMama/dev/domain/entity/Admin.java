@@ -28,6 +28,9 @@ public class Admin {
     @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
     private List<Item> itemList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
+    private List<OrderInfo> orderInfoList = new ArrayList<>();
+
     public Admin(String adminEmail, String adminPw, String adminName, String adminBirth, String adminPhoneNumber) {
         this.adminEmail = adminEmail;
         this.adminPw = adminPw;

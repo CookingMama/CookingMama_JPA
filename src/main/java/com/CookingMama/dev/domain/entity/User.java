@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -47,4 +49,7 @@ public class User {
         this.userZipCode = request.getUserZipcode();
         this.userPhoneNumber = request.getUserPhoneNumber();
     }
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<OrderInfo> orderInfoList = new ArrayList<>();
 }

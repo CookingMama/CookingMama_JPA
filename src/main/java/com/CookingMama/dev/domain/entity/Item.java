@@ -11,6 +11,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter@Setter
@@ -34,6 +36,9 @@ public class Item {
     @JsonIgnore
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<OrderInfo> orderInfoList = new ArrayList<>();
     public Item(ItemRegistRequest request, Admin admin, Category category){
         this.itemName = request.getItemName();
         this.itemOption = request.getItemOption();
