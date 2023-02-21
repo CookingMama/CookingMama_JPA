@@ -8,8 +8,6 @@ import lombok.Setter;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 public class AdminUpdateItemRequest {
-    private Integer adminId;
-    private Integer itemId;
     private Integer category;
     private String itemImage;
     private String itemName;
