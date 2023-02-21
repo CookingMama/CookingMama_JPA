@@ -63,10 +63,9 @@ public class AdminController {
         return adminItemService.adminStockView();
     }
     // 재고 리스트 수정
-    @PutMapping("/stock/{itemId}")
-    public String stockUpdate(@PathVariable("itemId") Long itemId,
-                            @RequestBody StockUpdateRequest request){
-        return adminItemService.adminStockUpdate(itemId, request);
+    @PutMapping("/stock")
+    public String stockUpdate(@RequestBody List<StockUpdateRequest> request){
+        return adminItemService.adminStockUpdate(request);
     }
     // 주문 내역 조회
     @GetMapping("/order")
@@ -74,9 +73,9 @@ public class AdminController {
         return adminService.adminOrderList();
     }
     // 주문 내역 수정 (배송 처리 & 송장번호 입력)
-    @PutMapping("/order/{orderId}")
-    public String adminOrderUpdate(@PathVariable("orderId") Long orderId,
-                                   @RequestBody AdminOrderRequest request){
-        return adminService.adminOrderUpdate(orderId, request);
+    @PutMapping("/order")
+    public String adminOrderUpdate(@RequestBody List<AdminOrderRequest> request){
+        log.info(request.toString());
+        return adminService.adminOrderUpdate(request);
     }
 }

@@ -64,7 +64,7 @@ public class Item {
         this.category = category;
     }
 
-    public void setStock(StockUpdateRequest request){
+    public void setStockUpdate(StockUpdateRequest request){
         this.itemCount = request.getItemCount();
     }
 

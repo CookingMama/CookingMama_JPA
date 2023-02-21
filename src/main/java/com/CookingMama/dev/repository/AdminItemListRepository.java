@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface AdminItemListRepository extends JpaRepository<Item, Long> {
     List<Item> findByAdminId(Long adminId);
+
+    Item findByAdminIdAndId(Long adminId, Long id);
 }
