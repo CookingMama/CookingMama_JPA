@@ -1,14 +1,8 @@
 package com.CookingMama.dev.controller;
 
 import com.CookingMama.dev.domain.entity.Item;
-import com.CookingMama.dev.domain.request.AdminLoginRequest;
-import com.CookingMama.dev.domain.request.AdminSignUpRequest;
-import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
-import com.CookingMama.dev.domain.request.ItemRegistRequest;
-import com.CookingMama.dev.domain.response.AdminItemDetailResponse;
-import com.CookingMama.dev.domain.response.AdminItemListResponse;
-import com.CookingMama.dev.domain.response.AdminResponse;
-import com.CookingMama.dev.domain.response.ItemListResponse;
+import com.CookingMama.dev.domain.request.*;
+import com.CookingMama.dev.domain.response.*;
 import com.CookingMama.dev.exception.EmailCheckException;
 import com.CookingMama.dev.security.SecurityService;
 import com.CookingMama.dev.service.AdminItemService;
@@ -61,5 +55,16 @@ public class AdminController {
     public String  adminItemUpdate(@PathVariable("itemId") Long itemId,
                                   @RequestBody AdminUpdateItemRequest request){
         return adminItemService.adminItemUpdate(itemId, request);
+    }
+    // 재고 리스트 조회
+    @GetMapping("/stock")
+    public List<StockManagementResponse> stockView(){
+        return adminItemService.adminStockView();
+    }
+    // 재고 리스트 수정
+    @PutMapping("/stock/{itemId}")
+    public String stockUpdate(@PathVariable("itemId") Long itemId,
+                            @RequestBody StockUpdateRequest request){
+        return adminItemService.adminStockUpdate(itemId, request);
     }
 }

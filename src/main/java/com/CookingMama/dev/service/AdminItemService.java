@@ -5,8 +5,10 @@ import com.CookingMama.dev.domain.entity.Category;
 import com.CookingMama.dev.domain.entity.Item;
 import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
+import com.CookingMama.dev.domain.request.StockUpdateRequest;
 import com.CookingMama.dev.domain.response.AdminItemDetailResponse;
 import com.CookingMama.dev.domain.response.ItemListResponse;
+import com.CookingMama.dev.domain.response.StockManagementResponse;
 import com.CookingMama.dev.repository.*;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +58,6 @@ public class AdminItemService {
     }
     // 상품 정보 수정
     public String adminItemUpdate(Long itemId, AdminUpdateItemRequest request){
-
         Optional<Category> category = categoryRepository.findById(request.getCategory());
         Category category1 = category.orElseThrow(NullPointerException::new);
         Optional<Item> item = adminItemListRepository.findById(itemId);
@@ -66,9 +67,33 @@ public class AdminItemService {
             adminItemListRepository.save(item1);
             return "상품 수정이 완료되었습니다.";
         }
-        catch (NullPointerException e){
+        catch (NullPointerException e) {
             return "상품 수정이 실패하였습니다.";
         }
+    }
+    // 재고 리스트 조회
+    public List<StockManagementResponse> adminStockView(){
+            Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
+            List<Item> item = adminItemListRepository.findByAdminId(adminId);
+            List<StockManagementResponse> stockList = item.stream()
+                    .map(StockManagementResponse::new)
+                    .collect(Collectors.toList());
+            return stockList;
+        }
+    // 재고 수정
+    public String adminStockUpdate(Long itemId, StockUpdateRequest request){
+        Optional<Item> item = adminItemListRepository.findById(itemId);
+        Item item1 = item.orElseThrow(NullPointerException::new);
+        try {
+            item1.setStock(request);
+            adminItemListRepository.save(item1);
+            return "재고 수정이 완료되었습니다.";
+        }catch (NullPointerException e){
+            return "재고 수정이 실패하였습니다.";
+        }
+    }
+
+
 
     }
-}
+
