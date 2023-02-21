@@ -60,4 +60,9 @@ public class UserController {
     public String userHeartsUpdate(@RequestBody List<HeartsRequest> request){
         return userService.userHeartsUpdate(request);
     }
+    // Hearts 삭제
+    @DeleteMapping("/hearts/{heartsId}")
+    public String userHeartsDelete(@PathVariable("heartsId") Long heartsId){
+        return userService.userHeartsDelete(heartsId);
+    }
 }

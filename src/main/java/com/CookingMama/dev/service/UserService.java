@@ -114,4 +114,15 @@ public class UserService {
             return "수정이 취소되었습니다.";
         }
     }
+    // Hearts 삭제
+    public String userHeartsDelete(Long heartsId){
+        Long userId = securityService.tokenToUser(securityService.getToken()).getId();
+        Hearts hearts = heartsRepository.findByUserIdAndId(heartsId, userId);
+        try {
+            heartsRepository.delete(hearts);
+            return "삭제가 완료되었습니다.";
+        }catch (NullPointerException e){
+            return "다시 시도해주세요.";
+        }
+    }
 }
