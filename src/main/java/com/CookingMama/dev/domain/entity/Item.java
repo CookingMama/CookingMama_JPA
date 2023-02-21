@@ -2,6 +2,7 @@ package com.CookingMama.dev.domain.entity;
 
 import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
+import com.CookingMama.dev.domain.request.StockUpdateRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,6 +53,10 @@ public class Item {
         this.itemInfo = request.getItemInfo();
         this.itemCount = request.getItemCount();
         this.category = category;
+    }
+
+    public void setStock(StockUpdateRequest request){
+        this.itemCount = request.getItemCount();
     }
 
 }
