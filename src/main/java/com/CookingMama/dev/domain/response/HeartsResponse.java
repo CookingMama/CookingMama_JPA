@@ -1,6 +1,5 @@
 package com.CookingMama.dev.domain.response;
 
-import com.CookingMama.dev.domain.dto.HeartsDTO;
 import com.CookingMama.dev.domain.entity.Hearts;
 import lombok.*;
 
