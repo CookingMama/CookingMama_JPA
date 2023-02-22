@@ -3,6 +3,7 @@ package com.CookingMama.dev.service;
 import com.CookingMama.dev.domain.entity.Coupon;
 import com.CookingMama.dev.domain.entity.User;
 import com.CookingMama.dev.domain.entity.UserCoupon;
+import com.CookingMama.dev.domain.entity.UserCouponID;
 import com.CookingMama.dev.domain.request.AddCouponRequest;
 import com.CookingMama.dev.domain.response.CouponListResponse;
 import com.CookingMama.dev.domain.response.ItemListResponse;
@@ -43,5 +44,20 @@ public class CouponService {
                 .map(CouponListResponse::new)
                 .collect(Collectors.toList());
         return responses;
+    }
+    public String useCoupon(String couponCode){
+        Long userId = securityService.tokenToDTO(securityService.getToken()).getId();
+        Coupon coupon = couponRepository.findByCouponCode(couponCode);
+        try {
+            UserCouponID request = new UserCouponID(userId, coupon.getId());
+            Optional<UserCoupon> findById = userCouponRepository.findById(request);
+            UserCoupon userCoupon = findById.orElseThrow(NullPointerException::new);
+            if(userCoupon.getStatus() == 1) return "이미 사용하신 쿠폰입니다.";
+            userCoupon.setStatus(1);
+            userCouponRepository.save(userCoupon);
+            return "쿠폰이 사용되었습니다.";
+        }catch (Exception e){
+            return "존재하지 않는 쿠폰 코드 입니다.";
+        }
     }
 }

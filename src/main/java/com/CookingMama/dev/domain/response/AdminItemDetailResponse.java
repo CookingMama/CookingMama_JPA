@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,6 +21,7 @@ public class AdminItemDetailResponse {
     private Integer itemPrice;
     private String itemInfo;
     private Integer itemCount;
+    private List<ReviewListResponse> reviews = new ArrayList<>();
     public AdminItemDetailResponse(Item item) {
         this.categoryName = item.getCategory().getCategory_name();
         this.itemImage = item.getItemImage();

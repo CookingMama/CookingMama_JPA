@@ -3,11 +3,13 @@ package com.CookingMama.dev.service;
 import com.CookingMama.dev.domain.entity.Admin;
 import com.CookingMama.dev.domain.entity.Category;
 import com.CookingMama.dev.domain.entity.Item;
+import com.CookingMama.dev.domain.entity.Review;
 import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
 import com.CookingMama.dev.domain.request.StockUpdateRequest;
 import com.CookingMama.dev.domain.response.AdminItemDetailResponse;
 import com.CookingMama.dev.domain.response.ItemListResponse;
+import com.CookingMama.dev.domain.response.ReviewListResponse;
 import com.CookingMama.dev.domain.response.StockManagementResponse;
 import com.CookingMama.dev.repository.*;
 import com.CookingMama.dev.security.SecurityService;
@@ -28,6 +30,7 @@ public class AdminItemService {
     private final AdminItemListRepository adminItemListRepository;
     private final AdminRepository adminRepository;
     private final CategoryRepository categoryRepository;
+    private final ReviewRepository reviewRepository;
 
     // 상품 등록
     public Item itemRegist(ItemRegistRequest request){
@@ -54,6 +57,9 @@ public class AdminItemService {
         Optional<Item> item = adminItemListRepository.findById(itemId);
         Item item1 = item.orElseThrow(NullPointerException::new);
         AdminItemDetailResponse adminItemDetailResponse = new AdminItemDetailResponse(item1);
+        List<Review> reviews = reviewRepository.findByItemId(itemId);
+        List<ReviewListResponse> responses = reviews.stream().map(ReviewListResponse::new).collect(Collectors.toList());
+        adminItemDetailResponse.setReviews(responses);
         return adminItemDetailResponse;
     }
     // 상품 정보 수정

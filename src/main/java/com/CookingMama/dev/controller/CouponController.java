@@ -12,24 +12,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/coupons")
 public class CouponController {
     private final CouponService couponService;
     private final SecurityService securityService;
 
-    @GetMapping("/coupons")
+    @GetMapping
     public List<CouponListResponse> getMyCoupons(){
         return couponService.getMyCoupons();
     }
-    @PostMapping("/coupons")
+    @PostMapping
     public String addCoupon(@RequestBody AddCouponRequest couponCode){
         User user = securityService.tokenToUser(securityService.getToken());
         return couponService.addCoupon(user, couponCode);
     }
-//    @PutMapping("/useCoupon")
-//    public Integer useCoupon(@RequestBody AddCouponRequest couponCode){
-//        String token = securityService.getToken();
-//        AddCouponRequest request = new AddCouponRequest(securityService.tokenToDTO(token).getId(), couponCode.getCouponCode());
-//        return couponService.useCoupon(request);
-//    }
+    @PutMapping("/useCoupon")
+    public String useCoupon(@RequestBody AddCouponRequest couponId){
+        return couponService.useCoupon(couponId.getCouponCode());
+    }
 }

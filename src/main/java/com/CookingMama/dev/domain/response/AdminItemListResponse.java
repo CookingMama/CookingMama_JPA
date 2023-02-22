@@ -16,6 +16,8 @@ public class AdminItemListResponse {
     private String itemName;
     private Integer itemPrice;
     private String itemImage;
+    private Double grade;
+    private Long reviewCount;
 
     public AdminItemListResponse(Item item) {
         this.adminName = item.getAdmin().getAdminName();
@@ -23,5 +25,7 @@ public class AdminItemListResponse {
         this.itemImage = item.getItemImage();
         this.itemPrice = item.getItemPrice();
         this.categoryName = item.getCategory().getCategory_name();
+        this.reviewCount = item.getReviewCount();
+        this.grade = item.getGrade();
     }
 }

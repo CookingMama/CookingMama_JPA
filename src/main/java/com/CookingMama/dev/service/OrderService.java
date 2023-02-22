@@ -37,6 +37,7 @@ public class OrderService {
                 Category category = categoryRepository.getById(request.getCategoryId());
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
+                if(item.getItemCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
                 item.setItemCount(item.getItemCount() - request.getItemCount());
                 userItemRepository.save(item);
                 OrderInfo orderInfo = new OrderInfo(request, admin, item, user, category);

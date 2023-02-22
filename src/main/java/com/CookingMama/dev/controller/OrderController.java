@@ -12,23 +12,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
     private final SecurityService securityService;
 
-    @PostMapping("/orders")
     public String addOrders(@RequestBody List<UserOrderRequest> requests){
         return orderService.addOrders(requests);
     }
-    @PutMapping("/orders/{orderNumber}")
+    @PutMapping("/{orderNumber}")
     public String cancelOrders(
             @PathVariable("orderNumber") Long orderNumber,
             @RequestBody List<UserOrderCancelRequest> requests){
         return orderService.cancelOrders(requests, orderNumber);
     }
 
-    @GetMapping("/orders")
+    @GetMapping
     public List<OrderResponse> myOrders(){
         return orderService.myOrders();
     }
