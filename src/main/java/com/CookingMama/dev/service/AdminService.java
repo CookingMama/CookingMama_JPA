@@ -1,19 +1,25 @@
 package com.CookingMama.dev.service;
 
 import com.CookingMama.dev.domain.entity.Admin;
+import com.CookingMama.dev.domain.entity.Item;
 import com.CookingMama.dev.domain.entity.OrderInfo;
+import com.CookingMama.dev.domain.entity.Review;
 import com.CookingMama.dev.domain.request.AdminLoginRequest;
 import com.CookingMama.dev.domain.request.AdminOrderRequest;
 import com.CookingMama.dev.domain.request.AdminSignUpRequest;
 import com.CookingMama.dev.domain.response.AdminOrderListResponse;
 import com.CookingMama.dev.domain.response.AdminResponse;
+import com.CookingMama.dev.domain.response.ReviewListResponse;
 import com.CookingMama.dev.exception.EmailCheckException;
+import com.CookingMama.dev.repository.AdminItemListRepository;
 import com.CookingMama.dev.repository.AdminRepository;
 import com.CookingMama.dev.repository.OrderRepository;
+import com.CookingMama.dev.repository.ReviewRepository;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +30,8 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final SecurityService securityService;
     private final OrderRepository orderRepository;
+    private final AdminItemListRepository adminItemListRepository;
+    private final ReviewRepository reviewRepository;
 
     public AdminResponse adminLoginService(AdminLoginRequest request){
         Optional<Admin> findByAdminEmailAndAdminPw = adminRepository.findByAdminEmailAndAdminPw(request.getAdminEmail(), request.getAdminPw());
@@ -64,5 +72,20 @@ public class AdminService {
         }catch (NullPointerException e){
             return "주문 내역 변경이 실패하였습니다.";
         }
+    }
+
+
+    public List<ReviewListResponse> getAdminItemReviewList() {
+        Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
+        List<Item> findItem = adminItemListRepository.findByAdminId(adminId);
+        List<Long> itemIds = new ArrayList<>();
+        for (Item item : findItem) itemIds.add(item.getId());
+        List<ReviewListResponse> responses = new ArrayList<>();
+        for (Long itemId : itemIds){
+            List<Review> reviewList = reviewRepository.findByItemId(itemId);
+            List<ReviewListResponse> reviewListResponses = reviewList.stream().map(ReviewListResponse::new).collect(Collectors.toList());
+            responses.addAll(reviewListResponses);
+        }
+        return responses;
     }
 }

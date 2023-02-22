@@ -78,4 +78,9 @@ public class AdminController {
         log.info(request.toString());
         return adminService.adminOrderUpdate(request);
     }
+
+    @GetMapping("/myitemreview")
+    public List<ReviewListResponse> getAdminItemReview(){
+        return adminService.getAdminItemReviewList();
+    }
 }

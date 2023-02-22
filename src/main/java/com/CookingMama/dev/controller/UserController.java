@@ -1,7 +1,5 @@
 package com.CookingMama.dev.controller;
 
-import com.CookingMama.dev.domain.dto.UserDTO;
-import com.CookingMama.dev.domain.entity.Hearts;
 import com.CookingMama.dev.domain.request.*;
 import com.CookingMama.dev.domain.response.*;
 import com.CookingMama.dev.exception.EmailCheckException;
