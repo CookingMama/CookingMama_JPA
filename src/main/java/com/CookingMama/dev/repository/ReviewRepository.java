@@ -17,4 +17,5 @@ public interface ReviewRepository extends JpaRepository<Review, ReviewID> {
 
     List<Review> findByUserId(Long userId);
 
+    List<Review> findTop30ByItemId(Long itemId);
 }

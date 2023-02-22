@@ -82,7 +82,7 @@ public class AdminService {
         for (Item item : findItem) itemIds.add(item.getId());
         List<ReviewListResponse> responses = new ArrayList<>();
         for (Long itemId : itemIds){
-            List<Review> reviewList = reviewRepository.findByItemId(itemId);
+            List<Review> reviewList = reviewRepository.findTop30ByItemId(itemId);
             List<ReviewListResponse> reviewListResponses = reviewList.stream().map(ReviewListResponse::new).collect(Collectors.toList());
             responses.addAll(reviewListResponses);
         }
