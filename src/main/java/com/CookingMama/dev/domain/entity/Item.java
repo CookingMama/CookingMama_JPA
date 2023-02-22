@@ -4,10 +4,13 @@ import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
 import com.CookingMama.dev.domain.request.StockUpdateRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.jfr.Unsigned;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 import javax.persistence.Entity;
@@ -27,6 +30,8 @@ public class Item {
     private String itemImage;
     private String itemInfo;
     private Integer itemCount;
+    private Double grade = 0.0;
+    private Long reviewCount = 0L;
 
     @ManyToOne
     @JsonIgnore

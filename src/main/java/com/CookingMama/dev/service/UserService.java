@@ -1,19 +1,21 @@
 package com.CookingMama.dev.service;
 
-import com.CookingMama.dev.domain.entity.Hearts;
-import com.CookingMama.dev.domain.entity.Item;
-import com.CookingMama.dev.domain.entity.User;
+import com.CookingMama.dev.domain.entity.*;
 import com.CookingMama.dev.domain.request.HeartsRequest;
 import com.CookingMama.dev.domain.request.LoginRequest;
+import com.CookingMama.dev.domain.request.ReviewRequest;
 import com.CookingMama.dev.domain.request.SignupRequest;
 import com.CookingMama.dev.domain.response.*;
+import com.CookingMama.dev.exception.EmailCheckException;
 import com.CookingMama.dev.exception.LoginException;
 import com.CookingMama.dev.repository.HeartsRepository;
+import com.CookingMama.dev.repository.ReviewRepository;
 import com.CookingMama.dev.repository.UserItemRepository;
 import com.CookingMama.dev.repository.UserRepository;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,15 +29,20 @@ public class UserService {
     private final SecurityService securityService;
     private final UserItemRepository userItemRepository;
     private final HeartsRepository heartsRepository;
+    private final ReviewRepository reviewRepository;
 
 
-    public List<ItemListResponse> userItemList(){
+    public UserMainResponse userItemList(){
         Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
-        List<Item> items = userItemRepository.findAll();
+        List<Item> items = userItemRepository.findTop100ByOrderById();
         List<ItemListResponse> responses = items.stream()
                 .map(ItemListResponse::new)
                 .collect(Collectors.toList());
-        return responses;
+        List<Review> reviews = reviewRepository.findTop6ByOrderByCreatedAt();
+        ReviewResponse reviewResponse = new ReviewResponse(reviews.get(0));
+        List<ReviewListResponse> reviewListResponses = reviews.stream().map(ReviewListResponse::new).collect(Collectors.toList());
+        UserMainResponse userMainResponse = new UserMainResponse(responses, reviewResponse, reviewListResponses.subList(1, reviews.size()));
+        return userMainResponse;
     }
     public UserResponse login(LoginRequest request){
         Optional<User> findByUserEmailAndUserPw =
@@ -51,12 +58,12 @@ public class UserService {
         return userResponse;
     }
 
-    public UserResponse signup(SignupRequest request){
+    public UserResponse signup(SignupRequest request) throws EmailCheckException {
         User user = new User();
         user.setUser(request);
         Optional<User> findUserEmail = userRepository.findByUserEmail(request.getUserEmail());
         if(findUserEmail.isPresent()){
-            throw new NullPointerException();
+            throw new EmailCheckException();
         }
         userRepository.save(user);
         LoginRequest loginRequest = new LoginRequest(user.getUserEmail(), user.getUserPw());
@@ -85,6 +92,9 @@ public class UserService {
         Optional<Item> findById = userItemRepository.findById(itemId);
         Item item = findById.orElseThrow(NullPointerException::new);
         UserItemResponse response = new UserItemResponse(item);
+        List<Review> reviews = reviewRepository.findByItemId(itemId);
+        List<ReviewListResponse> responses = reviews.stream().map(ReviewListResponse::new).collect(Collectors.toList());
+        response.setReviews(responses);
         return response;
     }
 
@@ -124,5 +134,12 @@ public class UserService {
         }catch (NullPointerException e){
             return "다시 시도해주세요.";
         }
+    }
+
+    public List<MyReviewListResponse> getMyReviewList() {
+        Long userId = securityService.tokenToDTO(securityService.getToken()).getId();
+        List<Review> find = reviewRepository.findByUserId(userId);
+        List<MyReviewListResponse> responses = find.stream().map(MyReviewListResponse::new).collect(Collectors.toList());
+        return responses;
     }
 }
