@@ -81,19 +81,18 @@ public class AdminItemService {
             return stockList;
         }
     // 재고 수정
-    public String adminStockUpdate(Long itemId, StockUpdateRequest request){
-        Optional<Item> item = adminItemListRepository.findById(itemId);
-        Item item1 = item.orElseThrow(NullPointerException::new);
+    public String adminStockUpdate(List<StockUpdateRequest> request){
+        Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
         try {
-            item1.setStock(request);
-            adminItemListRepository.save(item1);
-            return "재고 수정이 완료되었습니다.";
+            for(StockUpdateRequest request1:request){
+                Item items = adminItemListRepository.findByAdminIdAndId(adminId, request1.getId());
+                items.setStockUpdate(request1);
+                adminItemListRepository.save(items);
+            }
+            return "재고가 수정되었습니다.";
         }catch (NullPointerException e){
-            return "재고 수정이 실패하였습니다.";
+            return "다시 시도해주세요.";
         }
     }
-
-
-
-    }
+}
 

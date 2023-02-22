@@ -60,7 +60,8 @@ public class OrderInfo {
         this.category = category;
     }
 
-    public void adminOrderRequest(AdminOrderRequest request){
+    public void orderRequest(AdminOrderRequest request){
+        this.id = request.getId();
         this.status = request.getStatus();
         this.trackingNumber = request.getTrackingNumber();
     }
