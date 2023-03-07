@@ -52,7 +52,7 @@ public class AdminController {
         return adminItemService.adminItemDetail(itemId);
     }
     // 상품 수정
-    @PutMapping("/itemupdate/{itemId}")
+    @PutMapping("/{itemId}")
     public String  adminItemUpdate(@PathVariable("itemId") Long itemId,
                                   @RequestBody AdminUpdateItemRequest request){
         return adminItemService.adminItemUpdate(itemId, request);
