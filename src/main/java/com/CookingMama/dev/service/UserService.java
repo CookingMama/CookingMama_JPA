@@ -8,16 +8,14 @@ import com.CookingMama.dev.domain.request.SignupRequest;
 import com.CookingMama.dev.domain.response.*;
 import com.CookingMama.dev.exception.EmailCheckException;
 import com.CookingMama.dev.exception.LoginException;
-import com.CookingMama.dev.repository.HeartsRepository;
-import com.CookingMama.dev.repository.ReviewRepository;
-import com.CookingMama.dev.repository.UserItemRepository;
-import com.CookingMama.dev.repository.UserRepository;
+import com.CookingMama.dev.repository.*;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,18 +28,20 @@ public class UserService {
     private final UserItemRepository userItemRepository;
     private final HeartsRepository heartsRepository;
     private final ReviewRepository reviewRepository;
+    private final CategoryRepository categoryRepository;
 
 
     public UserMainResponse userItemList(){
-        Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
         List<Item> items = userItemRepository.findTop100ByOrderById();
         List<ItemListResponse> responses = items.stream()
                 .map(ItemListResponse::new)
                 .collect(Collectors.toList());
-        List<Review> reviews = reviewRepository.findTop6ByOrderByCreatedAt();
+        List<Review> reviews = reviewRepository.findTop6ByOrderByCreatedAtDesc();
+        List<Category> findAll = categoryRepository.findAll();
+        List<UserCategoryResponse> categories = findAll.stream().map(UserCategoryResponse::new).collect(Collectors.toList());
         ReviewResponse reviewResponse = new ReviewResponse(reviews.get(0));
         List<ReviewListResponse> reviewListResponses = reviews.stream().map(ReviewListResponse::new).collect(Collectors.toList());
-        UserMainResponse userMainResponse = new UserMainResponse(responses, reviewResponse, reviewListResponses.subList(1, reviews.size()));
+        UserMainResponse userMainResponse = new UserMainResponse(responses, reviewResponse, reviewListResponses.subList(1, reviews.size()), categories);
         return userMainResponse;
     }
     public UserResponse login(LoginRequest request){
@@ -142,4 +142,5 @@ public class UserService {
         List<MyReviewListResponse> responses = find.stream().map(MyReviewListResponse::new).collect(Collectors.toList());
         return responses;
     }
+
 }

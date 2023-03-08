@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemListResponse {
+    private Long id;
     private String adminName;
     private String categoryName;
     private String itemName;
@@ -22,6 +23,7 @@ public class ItemListResponse {
     private Long reviewCount;
 
     public ItemListResponse(Item item) {
+        this.id = item.getId();
         this.adminName = item.getAdmin().getAdminName();
         this.itemName = item.getItemName();
         this.itemImage = item.getItemImage();
