@@ -1,9 +1,6 @@
 package com.CookingMama.dev.service;
 
-import com.CookingMama.dev.domain.entity.Admin;
-import com.CookingMama.dev.domain.entity.Category;
-import com.CookingMama.dev.domain.entity.Item;
-import com.CookingMama.dev.domain.entity.Review;
+import com.CookingMama.dev.domain.entity.*;
 import com.CookingMama.dev.domain.request.AdminUpdateItemRequest;
 import com.CookingMama.dev.domain.request.ItemRegistRequest;
 import com.CookingMama.dev.domain.request.StockUpdateRequest;
@@ -32,9 +29,10 @@ public class AdminItemService {
     private final AdminRepository adminRepository;
     private final CategoryRepository categoryRepository;
     private final ReviewRepository reviewRepository;
+    private final ItemOptionRepository itemOptionRepository;
 
     // 상품 등록
-    public Item itemRegist(ItemRegistRequest request){
+    public List<ItemOption> itemRegist(ItemRegistRequest request){
         Integer categoryId = request.getCategory();
         Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
         Optional<Category> findCategory = categoryRepository.findById(categoryId);
@@ -42,7 +40,9 @@ public class AdminItemService {
         Optional<Admin> findById = adminRepository.findById(adminId);
         Admin admin = findById.orElseThrow(NullPointerException::new);
         Item item = new Item(request, admin, category);
-        return adminItemRegistRepository.save(item);
+        Item entity = adminItemRegistRepository.save(item);
+        List<ItemOption> itemOption =  request.getItemOption().stream().map(el-> new ItemOption(el, entity)).collect(Collectors.toList());
+        return itemOptionRepository.saveAll(itemOption);
     }
     // 상품 리스트 조회
     public List<ItemListResponse> adminItemList(){
@@ -88,13 +88,16 @@ public class AdminItemService {
             return stockList;
         }
     // 재고 수정
+
+    // 아이템 옵션에 대한 id를 받아와야함.
     public String adminStockUpdate(List<StockUpdateRequest> request){
         Long adminId = securityService.tokenToAdminDTO(securityService.getToken()).getId();
         try {
             for(StockUpdateRequest request1:request){
-                Item items = adminItemListRepository.findByAdminIdAndId(adminId, request1.getId());
-                items.setStockUpdate(request1);
-                adminItemListRepository.save(items);
+                Optional<ItemOption> findById = itemOptionRepository.findById(request1.getId());
+                ItemOption itemOption = findById.orElseThrow(NullPointerException::new);
+                itemOption.setStockUpdate(request1);
+                itemOptionRepository.save(itemOption);
             }
             return "재고가 수정되었습니다.";
         }catch (NullPointerException e){

@@ -1,6 +1,7 @@
 package com.CookingMama.dev.controller;
 
 import com.CookingMama.dev.domain.entity.Item;
+import com.CookingMama.dev.domain.entity.ItemOption;
 import com.CookingMama.dev.domain.request.*;
 import com.CookingMama.dev.domain.response.*;
 import com.CookingMama.dev.exception.EmailCheckException;
@@ -37,7 +38,7 @@ public class AdminController {
     }
     // 상품 등록
     @PostMapping("/itemregist")
-    public Item adminItemRegist(@RequestBody ItemRegistRequest request){
+    public List<ItemOption> adminItemRegist(@RequestBody ItemRegistRequest request){
         log.info(request.toString());
         return adminItemService.itemRegist(request);
     }

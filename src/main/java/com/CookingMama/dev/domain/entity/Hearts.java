@@ -23,8 +23,8 @@ public class Hearts {
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
+    @JoinColumn(name = "item_option_id")
+    private ItemOption itemOption;
 
     public void userHeartsUpdate(HeartsRequest request){
         this.count = request.getCount();

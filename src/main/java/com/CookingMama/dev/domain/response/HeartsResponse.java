@@ -12,9 +12,9 @@ public class HeartsResponse {
     private Integer count;
 
     public HeartsResponse(Hearts hearts){
-        this.itemName = hearts.getItem().getItemName();
-        this.itemOption = hearts.getItem().getItemOption();
-        this.itemPrice = hearts.getItem().getItemPrice();
+        this.itemName = hearts.getItemOption().getItem().getItemName();
+        this.itemOption = hearts.getItemOption().getOption();
+        this.itemPrice = hearts.getItemOption().getItem().getItemPrice();
         this.count = hearts.getCount();
     }
 }
