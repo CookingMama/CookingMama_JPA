@@ -1,20 +1,24 @@
 package com.CookingMama.dev.domain.response;
 
 import com.CookingMama.dev.domain.entity.Hearts;
+import com.CookingMama.dev.domain.entity.Item;
+import com.CookingMama.dev.domain.entity.ItemOption;
 import lombok.*;
+
+import java.util.List;
 
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
 public class HeartsResponse {
-    private String itemName;
     private String itemOption;
-    private Integer itemPrice;
     private Integer count;
+    private String itemName;
+    private Integer itemPrice;
 
     public HeartsResponse(Hearts hearts){
-        this.itemName = hearts.getItemOption().getItem().getItemName();
-        this.itemOption = hearts.getItemOption().getOption();
-        this.itemPrice = hearts.getItemOption().getItem().getItemPrice();
+        this.itemOption = hearts.getOption();
         this.count = hearts.getCount();
+        this.itemPrice = hearts.getItem().getItemPrice();
+        this.itemName = hearts.getItem().getItemName();
     }
 }

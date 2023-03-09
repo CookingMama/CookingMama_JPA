@@ -1,10 +1,7 @@
 package com.CookingMama.dev.service;
 
 import com.CookingMama.dev.domain.entity.*;
-import com.CookingMama.dev.domain.request.HeartsRequest;
-import com.CookingMama.dev.domain.request.LoginRequest;
-import com.CookingMama.dev.domain.request.ReviewRequest;
-import com.CookingMama.dev.domain.request.SignupRequest;
+import com.CookingMama.dev.domain.request.*;
 import com.CookingMama.dev.domain.response.*;
 import com.CookingMama.dev.exception.EmailCheckException;
 import com.CookingMama.dev.exception.LoginException;
@@ -103,6 +100,23 @@ public class UserService {
         response.setReviews(responses);
         return response;
     }
+    // Hearts 등록
+    public String userHeartsInsert(List<AddHeartsRequest> request) {
+        try{
+            Optional<User> findById = userRepository.findById(securityService.tokenToDTO(securityService.getToken()).getId());
+            User user = findById.orElseThrow(NullPointerException::new);
+            Optional<Item> itemById = userItemRepository.findById(request.get(0).getItemId());
+            Item item = itemById.orElseThrow(NullPointerException::new);
+            List<Hearts> heartsList = new ArrayList<>();
+            for(AddHeartsRequest i : request){
+                heartsList.add(new Hearts(i.getOption(), i.getCount(), item, user));
+            }
+            heartsRepository.saveAll(heartsList);
+            return("장바구니에 추가되었습니다.");
+        }catch (NullPointerException e){
+            return("장바구니 등록에 실패하였습니다.");
+        }
+    }
 
     // Hearts 조회
     public List<HeartsResponse> userHeartsList(){
@@ -148,5 +162,6 @@ public class UserService {
         List<MyReviewListResponse> responses = find.stream().map(MyReviewListResponse::new).collect(Collectors.toList());
         return responses;
     }
+
 
 }

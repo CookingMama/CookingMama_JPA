@@ -46,6 +46,13 @@ public class UserController {
     public UserItemResponse userItemDetail(@PathVariable("itemId") Long itemId){
         return userService.userItemDetail(itemId);
     }
+
+    // Hearts 등록
+    @PostMapping("/hearts")
+    public String userAddHearts(@RequestBody List<AddHeartsRequest> request) {
+        return userService.userHeartsInsert(request);
+    }
+
     // Hearts 조회
     @GetMapping("/hearts")
     public List<HeartsResponse> userHeartsList(){
