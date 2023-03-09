@@ -25,11 +25,9 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String itemName;
-    private String itemOption;
     private Integer itemPrice;
     private String itemImage;
     private String itemInfo;
-    private Integer itemCount;
     private Double grade = 0.0;
     private Long reviewCount = 0L;
 
@@ -43,6 +41,8 @@ public class Item {
     private Category category;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<ItemOption> itemOptionList = new ArrayList<>();
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<OrderInfo> orderInfoList = new ArrayList<>();
 
     @OneToOne
@@ -50,27 +50,21 @@ public class Item {
 
     public Item(ItemRegistRequest request, Admin admin, Category category){
         this.itemName = request.getItemName();
-        this.itemOption = request.getItemOption();
         this.itemPrice = request.getItemPrice();
         this.itemImage = request.getItemImage();
         this.itemInfo = request.getItemInfo();
-        this.itemCount = request.getItemCount();
         this.admin = admin;
         this.category = category;
     }
 
     public void setItem(AdminUpdateItemRequest request, Category category) {
         this.itemName = request.getItemName();
-        this.itemOption = request.getItemOption();
         this.itemPrice = request.getItemPrice();
         this.itemImage = request.getItemImage();
         this.itemInfo = request.getItemInfo();
-        this.itemCount = request.getItemCount();
         this.category = category;
     }
 
-    public void setStockUpdate(StockUpdateRequest request){
-        this.itemCount = request.getItemCount();
-    }
+
 
 }

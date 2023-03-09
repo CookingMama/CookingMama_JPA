@@ -1,10 +1,12 @@
 package com.CookingMama.dev.domain.response;
 
+import com.CookingMama.dev.domain.entity.ItemOption;
 import com.CookingMama.dev.domain.entity.OrderInfo;
 import lombok.*;
 
 import javax.persistence.Column;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
@@ -14,9 +16,8 @@ public class AdminOrderListResponse {
     private String categoryName;
     private String adminName;
     private String itemName;
-    private String itemOption;
+    private List<ItemOption> itemOption;
     private Integer itemPrice;
-    private Integer itemCount;
     private Integer itemDiscount;
     private Integer itemTotalPrice;
     private String userName;
@@ -33,9 +34,8 @@ public class AdminOrderListResponse {
         this.categoryName = orderInfo.getCategory().getCategory_name();
         this.adminName = orderInfo.getAdmin().getAdminName();
         this.itemName = orderInfo.getItem().getItemName();
-        this.itemOption = orderInfo.getItem().getItemOption();
+        this.itemOption = orderInfo.getItem().getItemOptionList();
         this.itemPrice = orderInfo.getItem().getItemPrice();
-        this.itemCount = orderInfo.getItem().getItemCount();
         this.itemDiscount = orderInfo.getItemDiscount();
         this.itemTotalPrice = orderInfo.getItemTotalPrice();
         this.userName = orderInfo.getUser().getUserName();

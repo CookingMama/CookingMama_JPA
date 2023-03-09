@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,9 +41,13 @@ public class UserService {
         List<Review> reviews = reviewRepository.findTop6ByOrderByCreatedAtDesc();
         List<Category> findAll = categoryRepository.findAll();
         List<UserCategoryResponse> categories = findAll.stream().map(UserCategoryResponse::new).collect(Collectors.toList());
-        ReviewResponse reviewResponse = new ReviewResponse(reviews.get(0));
-        List<ReviewListResponse> reviewListResponses = reviews.stream().map(ReviewListResponse::new).collect(Collectors.toList());
-        UserMainResponse userMainResponse = new UserMainResponse(responses, reviewResponse, reviewListResponses.subList(1, reviews.size()), categories);
+        ReviewResponse reviewResponse = new ReviewResponse();
+        List<ReviewListResponse> reviewListResponses = new ArrayList<>();
+        if(!reviews.isEmpty()) {
+            reviewResponse = new ReviewResponse(reviews.get(0));
+            reviewListResponses = reviews.stream().map(ReviewListResponse::new).collect(Collectors.toList()).subList(1, reviews.size());
+        }
+        UserMainResponse userMainResponse = new UserMainResponse(responses, reviewResponse, reviewListResponses, categories);
         return userMainResponse;
     }
     public UserResponse login(LoginRequest request){

@@ -5,10 +5,7 @@ import com.CookingMama.dev.domain.request.UserOrderCancelRequest;
 import com.CookingMama.dev.domain.request.UserOrderRequest;
 import com.CookingMama.dev.domain.response.AdminOrderListResponse;
 import com.CookingMama.dev.domain.response.OrderResponse;
-import com.CookingMama.dev.repository.AdminRepository;
-import com.CookingMama.dev.repository.CategoryRepository;
-import com.CookingMama.dev.repository.OrderRepository;
-import com.CookingMama.dev.repository.UserItemRepository;
+import com.CookingMama.dev.repository.*;
 import com.CookingMama.dev.security.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +25,7 @@ public class OrderService {
     private final AdminRepository adminRepository;
     private final CategoryRepository categoryRepository;
     private final SecurityService securityService;
+    private final ItemOptionRepository itemOptionRepository;
     @Transactional
     public String addOrders(List<UserOrderRequest> requests){
         User user = securityService.tokenToUser(securityService.getToken());
@@ -37,8 +35,9 @@ public class OrderService {
                 Category category = categoryRepository.getById(request.getCategoryId());
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
-                if(item.getItemCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
-                item.setItemCount(item.getItemCount() - request.getItemCount());
+                ItemOption itemOption = itemOptionRepository.findByItem(item);
+                if(itemOption.getCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
+                itemOption.setCount(itemOption.getCount() - request.getItemCount());
                 userItemRepository.save(item);
                 OrderInfo orderInfo = new OrderInfo(request, admin, item, user, category);
                 orderRepository.save(orderInfo);
@@ -72,7 +71,8 @@ public class OrderService {
             for(UserOrderCancelRequest request : requests){
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
-                item.setItemCount(item.getItemCount() + request.getItemCount());
+                ItemOption itemOption = itemOptionRepository.findByItem(item);
+                itemOption.setCount(itemOption.getCount() + request.getItemCount());
             }
             return "주문이 취소되었습니다.";
         }catch (Exception e){
