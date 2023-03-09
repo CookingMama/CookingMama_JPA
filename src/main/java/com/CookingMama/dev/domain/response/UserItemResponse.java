@@ -30,7 +30,7 @@ public class UserItemResponse {
         this.itemImage = item.getItemImage();
         this.itemName = item.getItemName();
         this.adminName = item.getAdmin().getAdminName();
-        this.categoryName = item.getCategory().getCategory_name();
+        this.categoryName = item.getCategory().getCategoryName();
         this.itemOption = item.getItemOptionList();
         this.itemPrice = item.getItemPrice();
         this.itemInfo = item.getItemInfo();

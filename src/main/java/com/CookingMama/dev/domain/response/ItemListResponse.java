@@ -28,7 +28,7 @@ public class ItemListResponse {
         this.itemName = item.getItemName();
         this.itemImage = item.getItemImage();
         this.itemPrice = item.getItemPrice();
-        this.categoryName = item.getCategory().getCategory_name();
+        this.categoryName = item.getCategory().getCategoryName();
         this.reviewCount = item.getReviewCount();
         this.grade = item.getGrade();
     }

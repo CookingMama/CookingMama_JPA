@@ -17,7 +17,7 @@ public class UserCategoryResponse {
 
     public UserCategoryResponse(Category category) {
         this.id = category.getId();
-        this.name = category.getCategory_name();
+        this.name = category.getCategoryName();
     }
 }
 

@@ -19,7 +19,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String category_name;
+    private String categoryName;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Item> item = new ArrayList<>();

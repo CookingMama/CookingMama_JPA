@@ -19,7 +19,7 @@ public class StockManagementResponse {
     private String itemImage;
 
     public StockManagementResponse(Item item){
-        this.categoryName = item.getCategory().getCategory_name();
+        this.categoryName = item.getCategory().getCategoryName();
         this.itemName = item.getItemName();
         this.itemOption = item.getItemOptionList();
         this.itemPrice = item.getItemPrice();

@@ -23,7 +23,7 @@ public class AdminItemDetailResponse {
     private String itemInfo;
     private List<ReviewListResponse> reviews = new ArrayList<>();
     public AdminItemDetailResponse(Item item) {
-        this.categoryName = item.getCategory().getCategory_name();
+        this.categoryName = item.getCategory().getCategoryName();
         this.itemImage = item.getItemImage();
         this.itemName = item.getItemName();
         this.itemOption = item.getItemOptionList();

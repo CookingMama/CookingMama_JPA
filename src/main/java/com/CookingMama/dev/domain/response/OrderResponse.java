@@ -34,7 +34,7 @@ public class OrderResponse {
     public OrderResponse(OrderInfo orderInfo){
         this.orderNumber = orderInfo.getOrderNumber();
         this.orderDate = orderInfo.getOrderDate();
-        this.categoryName = orderInfo.getCategory().getCategory_name();
+        this.categoryName = orderInfo.getCategory().getCategoryName();
         this.adminName = orderInfo.getAdmin().getAdminName();
         this.itemName = orderInfo.getItem().getItemName();
         this.itemOption = orderInfo.getItem().getItemOptionList();
