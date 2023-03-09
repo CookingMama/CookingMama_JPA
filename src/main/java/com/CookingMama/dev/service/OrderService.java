@@ -31,10 +31,10 @@ public class OrderService {
         User user = securityService.tokenToUser(securityService.getToken());
         try {
             for (UserOrderRequest request : requests) {
-                Admin admin = adminRepository.getById(request.getAdminId());
-                Category category = categoryRepository.getById(request.getCategoryId());
+                Category category = categoryRepository.findByCategoryName(request.getCategoryName());
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
+                Admin admin = adminRepository.getById(item.getAdmin().getId());
                 ItemOption itemOption = itemOptionRepository.findByItem(item);
                 if(itemOption.getCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
                 itemOption.setCount(itemOption.getCount() - request.getItemCount());

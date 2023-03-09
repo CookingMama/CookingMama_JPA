@@ -17,6 +17,7 @@ public class OrderController {
     private final OrderService orderService;
     private final SecurityService securityService;
 
+    @PostMapping
     public String addOrders(@RequestBody List<UserOrderRequest> requests){
         return orderService.addOrders(requests);
     }
