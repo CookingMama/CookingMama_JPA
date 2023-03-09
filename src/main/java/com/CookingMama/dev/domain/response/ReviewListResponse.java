@@ -3,6 +3,8 @@ package com.CookingMama.dev.domain.response;
 import com.CookingMama.dev.domain.entity.Review;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -15,6 +17,7 @@ public class ReviewListResponse {
     private Double grade;
     private String image;
     private String content;
+    private LocalDateTime createdAt;
 
     public ReviewListResponse(Review review) {
         this.itemName = review.getItem().getItemName();
@@ -26,5 +29,6 @@ public class ReviewListResponse {
         else{
             this.content = review.getContent().substring(20) + "...";
         }
+        this.createdAt = review.getCreatedAt();
     }
 }
