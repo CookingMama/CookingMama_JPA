@@ -16,6 +16,7 @@ public class HeartsResponse {
     private String itemName;
     private Integer itemPrice;
     private Long itemId;
+    private String categoryName;
 
     public HeartsResponse(Hearts hearts){
         this.heartsId = hearts.getId();
@@ -24,5 +25,6 @@ public class HeartsResponse {
         this.itemPrice = hearts.getItem().getItemPrice();
         this.itemName = hearts.getItem().getItemName();
         this.itemId = hearts.getItem().getId();
+        this.categoryName = hearts.getItem().getCategory().getCategoryName();
     }
 }
