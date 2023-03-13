@@ -18,6 +18,7 @@ public class UserItemResponse {
     private String itemName;
     private String adminName;
     private String categoryName;
+    private Integer categoryId;
     private List<ItemOption> itemOption;
     private Integer itemPrice;
     private String itemInfo;
@@ -31,6 +32,7 @@ public class UserItemResponse {
         this.itemName = item.getItemName();
         this.adminName = item.getAdmin().getAdminName();
         this.categoryName = item.getCategory().getCategoryName();
+        this.categoryId = item.getCategory().getId();
         this.itemOption = item.getItemOptionList();
         this.itemPrice = item.getItemPrice();
         this.itemInfo = item.getItemInfo();

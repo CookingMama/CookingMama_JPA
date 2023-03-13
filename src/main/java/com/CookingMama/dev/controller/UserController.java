@@ -21,6 +21,11 @@ public class UserController {
         return userService.userItemList();
     }
 
+    @GetMapping("/{categoryId}")
+    public List<ItemListResponse> userCategoryItemList(@PathVariable Integer categoryId){
+        return userService.userItemListByCategory(categoryId);
+    }
+
     // User 로그인
     @PostMapping("/login")
     public UserResponse login(@RequestBody @Valid LoginRequest request){

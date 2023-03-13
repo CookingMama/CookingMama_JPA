@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ReviewResponse {
+    private Long itemId;
+    private Long userId;
     private String itemName;
     private String userName;
     private Double grade;
@@ -20,6 +22,8 @@ public class ReviewResponse {
     private LocalDateTime createdAt;
 
     public ReviewResponse(Review review) {
+        this.itemId = review.getItem().getId();
+        this.userId = review.getUser().getId();
         this.itemName = review.getItem().getItemName();
         this.userName = review.getUser().getUserName().substring(0, 1) + "**";
         this.grade = review.getGrade();

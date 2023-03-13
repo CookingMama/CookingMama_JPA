@@ -47,6 +47,14 @@ public class UserService {
         UserMainResponse userMainResponse = new UserMainResponse(responses, reviewResponse, reviewListResponses, categories);
         return userMainResponse;
     }
+
+    public List<ItemListResponse> userItemListByCategory(Integer categoryId) {
+        List<Item> items = userItemRepository.findByCategoryId(categoryId);
+        List<ItemListResponse> responses = items.stream()
+                .map(ItemListResponse::new)
+                .collect(Collectors.toList());
+        return responses;
+    }
     public UserResponse login(LoginRequest request){
         Optional<User> findByUserEmailAndUserPw =
                 userRepository.findByUserEmailAndUserPw(request.getUserEmail(), request.getUserPw());
@@ -162,6 +170,7 @@ public class UserService {
         List<MyReviewListResponse> responses = find.stream().map(MyReviewListResponse::new).collect(Collectors.toList());
         return responses;
     }
+
 
 
 }
