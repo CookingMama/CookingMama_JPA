@@ -13,7 +13,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-    name="keywords",
+    name="itemOption",
     uniqueConstraints={
         @UniqueConstraint(
             name="constraintName",

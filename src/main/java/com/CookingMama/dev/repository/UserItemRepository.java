@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface UserItemRepository extends JpaRepository<Item, Long> {
 
-    List<Item> findTop100ByOrderById();
-
     List<Item> findByCategoryId(Integer categoryId);
 
+    List<Item> findTop100ByOrderByIdDesc();
 }

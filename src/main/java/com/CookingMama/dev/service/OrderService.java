@@ -26,10 +26,13 @@ public class OrderService {
     private final CategoryRepository categoryRepository;
     private final SecurityService securityService;
     private final ItemOptionRepository itemOptionRepository;
+    private final HeartsRepository heartsRepository;
     @Transactional
     public String addOrders(List<UserOrderRequest> requests){
         User user = securityService.tokenToUser(securityService.getToken());
         try {
+            List<Hearts> hearts = heartsRepository.findByUserId(user.getId());
+            heartsRepository.deleteAll(hearts);
             for (UserOrderRequest request : requests) {
                 Category category = categoryRepository.findByCategoryName(request.getCategoryName());
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());

@@ -31,7 +31,7 @@ public class UserService {
 
 
     public UserMainResponse userItemList(){
-        List<Item> items = userItemRepository.findTop100ByOrderById();
+        List<Item> items = userItemRepository.findTop100ByOrderByIdDesc();
         List<ItemListResponse> responses = items.stream()
                 .map(ItemListResponse::new)
                 .collect(Collectors.toList());
