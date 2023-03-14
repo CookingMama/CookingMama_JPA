@@ -35,15 +35,18 @@ public class OrderService {
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
                 Admin admin = adminRepository.getById(item.getAdmin().getId());
-                ItemOption itemOption = itemOptionRepository.findByItem(item);
-                if(itemOption.getCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
-                itemOption.setCount(itemOption.getCount() - request.getItemCount());
+                List<ItemOption> itemOptions = itemOptionRepository.findByItemId(request.getItemId());
+                for(ItemOption itemOption : itemOptions) {
+                    if (itemOption.getCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
+                    itemOption.setCount(itemOption.getCount() - request.getItemCount());
+                }
                 userItemRepository.save(item);
                 OrderInfo orderInfo = new OrderInfo(request, admin, item, user, category);
                 orderRepository.save(orderInfo);
             }
             return "주문이 성공적으로 완료되었습니다.";
         }catch(Exception e){
+            e.printStackTrace();
             return "주문에 실패하였습니다!";
         }
     }
@@ -71,8 +74,10 @@ public class OrderService {
             for(UserOrderCancelRequest request : requests){
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
-                ItemOption itemOption = itemOptionRepository.findByItem(item);
-                itemOption.setCount(itemOption.getCount() + request.getItemCount());
+                List<ItemOption> itemOptions = itemOptionRepository.findByItemId(request.getItemId());
+                for(ItemOption itemOption : itemOptions) {
+                    itemOption.setCount(itemOption.getCount() + request.getItemCount());
+                }
             }
             return "주문이 취소되었습니다.";
         }catch (Exception e){

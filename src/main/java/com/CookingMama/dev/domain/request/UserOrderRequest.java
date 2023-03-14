@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserOrderRequest {
     private Long itemId;
+    private Long heartsId;
     private Integer itemPrice;
     private String categoryName;
     private Integer itemCount;

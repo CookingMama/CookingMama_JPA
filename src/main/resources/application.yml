@@ -16,3 +16,7 @@ spring:
 jwt:
   SECRET_KEY: aidhgjarisdafjskljklriaonsdikrnsnnfkdsijkevklasdfujiielarlfnkanvdkvcxfsdgweasdv
   EXP_TIME: 3600000
+
+app:
+  firebase-configuration-file: ./serviceAccountKey.json
+  firebase-bucket: cookingmama-50483.appspot.com

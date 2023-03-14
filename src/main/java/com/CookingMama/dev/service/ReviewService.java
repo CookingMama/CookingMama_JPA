@@ -9,9 +9,18 @@ import com.CookingMama.dev.domain.response.ReviewResponse;
 import com.CookingMama.dev.repository.ReviewRepository;
 import com.CookingMama.dev.repository.UserItemRepository;
 import com.CookingMama.dev.security.SecurityService;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.cloud.storage.Storage;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.cloud.StorageClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Service
@@ -20,6 +29,8 @@ public class ReviewService {
     private final SecurityService securityService;
     private final UserItemRepository userItemRepository;
     private final ReviewRepository reviewRepository;
+    private final fireBaseService fireBaseService;
+
     public String insertReview(ReviewRequest request) {
         try {
             User user = securityService.tokenToUser(securityService.getToken());
@@ -35,8 +46,10 @@ public class ReviewService {
             item.setGrade(newGrade);
             item.setReviewCount(count + 1);
             userItemRepository.save(item);
+            // firebase
+            String image = fireBaseService.fireBaseImage(request.getImage(), request.getImageName());
             // 리뷰 저장
-            Review review = new Review(request, user, item);
+            Review review = new Review(request, image, user, item);
             reviewRepository.save(review);
             return "리뷰가 등록되었습니다.";
         }catch(Exception e){
@@ -62,9 +75,11 @@ public class ReviewService {
             item.setGrade(newGrade);
             item.setReviewCount(count + 1);
             userItemRepository.save(item);
+            // firebase
+            String image = fireBaseService.fireBaseImage(request.getImage(), request.getImageName());
             // 리뷰 수정
             Review find = reviewRepository.findByItemIdAndUserId(itemId, userId);
-            find.setReview(request);
+            find.setReview(request, image);
             reviewRepository.save(find);
             
             return "리뷰가 수정되었습니다.";

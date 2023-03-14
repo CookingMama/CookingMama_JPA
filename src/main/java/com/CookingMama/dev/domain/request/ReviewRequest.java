@@ -1,6 +1,7 @@
 package com.CookingMama.dev.domain.request;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -14,6 +15,7 @@ public class ReviewRequest {
     private Long itemId;
     @NotEmpty(message = "내용을 입력해주세요.")
     private String content;
-    private String image;
+    private MultipartFile image;
+    private String imageName;
     private Double grade;
 }

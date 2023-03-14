@@ -4,9 +4,11 @@ import com.CookingMama.dev.domain.request.ReviewRequest;
 import com.CookingMama.dev.domain.response.ReviewListResponse;
 import com.CookingMama.dev.domain.response.ReviewResponse;
 import com.CookingMama.dev.service.ReviewService;
+import com.google.firebase.auth.FirebaseAuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,7 +18,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     // Review 작성
     @PostMapping("/write")
-    public String writeReview(@RequestBody ReviewRequest request){
+    public String writeReview(@ModelAttribute ReviewRequest request) {
         return reviewService.insertReview(request);
     }
 
@@ -29,8 +31,7 @@ public class ReviewController {
     @PutMapping("/edit/{itemId}/{userId}")
     public String editReview(@RequestBody ReviewRequest request,
                              @PathVariable("itemId") Long itemId,
-                             @PathVariable("userId") Long userId)
-    {
+                             @PathVariable("userId") Long userId) {
         return reviewService.updateReview(request, itemId, userId);
     }
 

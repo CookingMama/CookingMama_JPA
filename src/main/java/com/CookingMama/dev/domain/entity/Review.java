@@ -31,14 +31,19 @@ public class Review implements Serializable {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Review(ReviewRequest request, User user, Item item) {
+
+    }
+
+    public Review(ReviewRequest request, String image, User user, Item item) {
         this.user = user;
         this.item = item;
-        this.image = request.getImage();
+        this.image = image;
         this.content = request.getContent();
         this.grade = request.getGrade();
     }
-    public void setReview(ReviewRequest request){
-        this.image = request.getImage();
+
+    public void setReview(ReviewRequest request, String image){
+        this.image = image;
         this.content = request.getContent();
         this.grade = request.getGrade();
     }
