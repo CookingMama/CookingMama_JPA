@@ -143,8 +143,10 @@ public class UserService {
         try {
             for(Hearts hearts1:hearts) {
                 for (HeartsRequest request1 : request) {
-                    hearts1.userHeartsUpdate(request1);
-                    heartsRepository.save(hearts1);
+                    if(hearts1.getId() == request1.getHeartsId()){
+                        hearts1.userHeartsUpdate(request1);
+                        heartsRepository.save(hearts1);
+                    }
                 }
             }
             return "수정이 완료되었습니다.";

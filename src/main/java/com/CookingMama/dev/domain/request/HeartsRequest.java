@@ -8,5 +8,6 @@ import lombok.Setter;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 public class HeartsRequest {
+    private Long heartsId;
     private Integer count;
 }

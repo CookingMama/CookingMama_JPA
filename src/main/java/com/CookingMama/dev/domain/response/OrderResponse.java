@@ -18,8 +18,10 @@ public class OrderResponse {
     private LocalDateTime orderDate;
     private String categoryName;
     private String adminName;
+    private Long itemId;
     private String itemName;
-    private List<ItemOption> itemOption;
+    private String itemOption;
+    private Integer itemCount;
     private Integer itemPrice;
     private Integer itemDiscount;
     private Integer itemTotalPrice;
@@ -36,8 +38,10 @@ public class OrderResponse {
         this.orderDate = orderInfo.getOrderDate();
         this.categoryName = orderInfo.getCategory().getCategoryName();
         this.adminName = orderInfo.getAdmin().getAdminName();
+        this.itemId = orderInfo.getItem().getId();
         this.itemName = orderInfo.getItem().getItemName();
-        this.itemOption = orderInfo.getItem().getItemOptionList();
+        this.itemOption = orderInfo.getItemOption();
+        this.itemCount = orderInfo.getItemCount();
         this.itemPrice = orderInfo.getItem().getItemPrice();
         this.itemDiscount = orderInfo.getItemDiscount();
         this.itemTotalPrice = orderInfo.getItemTotalPrice();

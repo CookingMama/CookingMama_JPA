@@ -10,4 +10,5 @@ import lombok.*;
 public class UserOrderCancelRequest {
     private Long itemId;
     private Integer itemCount;
+    private String itemOption;
 }

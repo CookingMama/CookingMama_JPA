@@ -12,6 +12,7 @@ public class UserOrderRequest {
     private Long heartsId;
     private Integer itemPrice;
     private String categoryName;
+    private String itemOption;
     private Integer itemCount;
     private Integer itemDiscount;
     private Integer itemTotalPrice;

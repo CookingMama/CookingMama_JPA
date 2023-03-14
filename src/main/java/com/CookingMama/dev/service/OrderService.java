@@ -3,7 +3,6 @@ package com.CookingMama.dev.service;
 import com.CookingMama.dev.domain.entity.*;
 import com.CookingMama.dev.domain.request.UserOrderCancelRequest;
 import com.CookingMama.dev.domain.request.UserOrderRequest;
-import com.CookingMama.dev.domain.response.AdminOrderListResponse;
 import com.CookingMama.dev.domain.response.OrderResponse;
 import com.CookingMama.dev.repository.*;
 import com.CookingMama.dev.security.SecurityService;
@@ -38,11 +37,9 @@ public class OrderService {
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
                 Admin admin = adminRepository.getById(item.getAdmin().getId());
-                List<ItemOption> itemOptions = itemOptionRepository.findByItemId(request.getItemId());
-                for(ItemOption itemOption : itemOptions) {
-                    if (itemOption.getCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
-                    itemOption.setCount(itemOption.getCount() - request.getItemCount());
-                }
+                ItemOption itemOption = itemOptionRepository.findByItemIdAndOption(request.getItemId(), request.getItemOption());
+                if (itemOption.getCount() - request.getItemCount() < 0) return "재고가 부족합니다!";
+                itemOption.setCount(itemOption.getCount() - request.getItemCount());
                 userItemRepository.save(item);
                 OrderInfo orderInfo = new OrderInfo(request, admin, item, user, category);
                 orderRepository.save(orderInfo);
@@ -77,10 +74,8 @@ public class OrderService {
             for(UserOrderCancelRequest request : requests){
                 Optional<Item> findById = userItemRepository.findById(request.getItemId());
                 Item item = findById.orElseThrow(NullPointerException::new);
-                List<ItemOption> itemOptions = itemOptionRepository.findByItemId(request.getItemId());
-                for(ItemOption itemOption : itemOptions) {
-                    itemOption.setCount(itemOption.getCount() + request.getItemCount());
-                }
+                ItemOption itemOption = itemOptionRepository.findByItemIdAndOption(request.getItemId(), request.getItemOption());
+                itemOption.setCount(itemOption.getCount() + request.getItemCount());
             }
             return "주문이 취소되었습니다.";
         }catch (Exception e){

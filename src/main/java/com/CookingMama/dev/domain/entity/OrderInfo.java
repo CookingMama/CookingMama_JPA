@@ -25,6 +25,8 @@ public class OrderInfo {
     private Integer itemDiscount = 0;
     private Integer itemTotalPrice;
     private Long orderNumber;
+    private String itemOption;
+    private Integer itemCount;
     private String trackingNumber = "배송준비중";
     private LocalDateTime orderDate = LocalDateTime.now();
     private Integer status = 0;
@@ -54,6 +56,8 @@ public class OrderInfo {
         this.itemDiscount = request.getItemDiscount();
         this.itemTotalPrice = request.getItemTotalPrice();
         this.orderNumber = request.getOrderNumber();
+        this.itemCount = request.getItemCount();
+        this.itemOption = request.getItemOption();
         this.admin = admin;
         this.item = item;
         this.user = user;
